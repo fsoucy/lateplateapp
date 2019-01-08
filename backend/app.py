@@ -6,7 +6,7 @@ CORS(app, supports_credentials=True)
 app.config['SECRET_KEY'] = 'super secret'
 
 users = {"Frank": "password", "Casey": "otherPassword"}
-names = {"Frank Soucy": "Default", "Jonas Kantola": "Default"}
+names = [("Frank Soucy", "Default"), ("Jonas Kantola", "Default")]
 
 @app.route('/logIn', methods=['POST'])
 def logIn():
@@ -42,9 +42,13 @@ def addName():
         username = session['loggedIn']
         if 'name' in data:
             name = data['name']
-            if not name in names:
-                names[name] = username
-    namesList = [name for name in names]
+            alreadyPresent = False
+            for otherName, otherUser in names:
+                if name == otherName:
+                    alreadyPresent = True
+            if not alreadyPresent:
+                names.append((name, username))
+    namesList = [name for name,user in names]
     return jsonify({"names": namesList})
 
 @app.route('/removeName', methods=['POST'])
@@ -54,16 +58,20 @@ def removeName():
         username = session['loggedIn']
         if 'name' in data:
             name = data['name']
-            if name in names:
-                originalUsername = names[name]
-                if username == originalUsername:
-                    names.pop(name, None)
-    namesList = [name for name in names]
+            indexToRemove = -1
+            index = 0
+            for otherName, otherUser in names:
+                if name == otherName and username == otherUser:
+                    indexToRemove = index
+                index += 1
+            if indexToRemove > -1:
+                del names[indexToRemove]
+    namesList = [name for name,user in names]
     return jsonify({"names": namesList})
 
 @app.route('/getNames', methods=['GET'])
 def getNames():
-    namesList = [name for name in names]
+    namesList = [name for name,user in names]
     return jsonify({"names": namesList})
 
 app.run(host="0.0.0.0", port=8080, threaded=True)
