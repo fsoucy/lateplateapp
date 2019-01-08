@@ -35,7 +35,8 @@ class Home extends Component {
     this.state = {
       names: ["Casey Bussone", "Frank Soucy", "Jonas Kantola", "Isaac Perper"],
       nameValue: "",
-      hidden: true
+      hidden: true,
+      illegalDelete: false
     };
     this.onChange = this.onChange.bind(this);
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -61,7 +62,16 @@ class Home extends Component {
     return "duplicateWarning";
   }
 
+  checkIllegalDeleteWarning() {
+    if (!this.state.illegalDelete) {
+      return "illegalDeleteWarning hidden";
+    } else {
+      return "illegalDeleteWarning";
+    }
+  }
+
   onChange(e) {
+    this.setState({illegalDelete: false})
     this.setState({nameValue: e.target.value});
     this.setState({hidden:true});
   }
@@ -93,7 +103,7 @@ class Home extends Component {
     })
       .then(response => response.json())
       .then(data =>
-        this.setState({names: data.names}),
+        this.setState({names: data.names, illegalDelete: false}),
       )
   }
 
@@ -111,7 +121,7 @@ class Home extends Component {
     })
       .then(response => response.json())
       .then(data =>
-        this.setState({names: data.names}),
+        this.setState({names: data.names, illegalDelete: data.illegalDelete}),
       )
   }
 
@@ -140,6 +150,7 @@ class Home extends Component {
         <button onClick={this.handleLogOut}>Log Out</button>
         <h1 className="header">Late Plate Form</h1>
         <h2 className="totalPlates">{this.state.names.length} Total Plates</h2>
+        <p className={this.checkIllegalDeleteWarning()}>Cannot delete name you did not add!</p>
         <p className={this.checkDuplicateWarning()}>No duplicate names!</p>
       </div>
       <div className="container">

@@ -1,4 +1,4 @@
-.duplicateWarning {
+.duplicateWarning, .illegalDeleteWarning {
   font-weight: bold;
   color: red;
 }

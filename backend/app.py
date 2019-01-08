@@ -54,6 +54,7 @@ def addName():
 @app.route('/removeName', methods=['POST'])
 def removeName():
     data = json.loads(request.data.decode('utf-8'))
+    illegalDelete = False
     if 'loggedIn' in session:
         username = session['loggedIn']
         if 'name' in data:
@@ -61,13 +62,16 @@ def removeName():
             indexToRemove = -1
             index = 0
             for otherName, otherUser in names:
-                if name == otherName and username == otherUser:
-                    indexToRemove = index
+                if name == otherName:
+                    if username == otherUser:
+                        indexToRemove = index
+                    else:
+                        illegalDelete = True
                 index += 1
             if indexToRemove > -1:
                 del names[indexToRemove]
     namesList = [name for name,user in names]
-    return jsonify({"names": namesList})
+    return jsonify({"names": namesList, "illegalDelete": illegalDelete})
 
 @app.route('/getNames', methods=['GET'])
 def getNames():
