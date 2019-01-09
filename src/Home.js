@@ -145,13 +145,17 @@ class Home extends Component {
   render() {
     return (
       <div>
+      <div className="header">
       <div className="headerContainer">
-        <h1>Hello, {this.props.username}</h1>
-        <button onClick={this.handleLogOut}>Log Out</button>
-        <h1 className="header">Late Plate Form</h1>
+        <h1 className="textHeader">Late Plate Form</h1>
         <h2 className="totalPlates">{this.state.names.length} Total Plates</h2>
         <p className={this.checkIllegalDeleteWarning()}>Cannot delete name you did not add!</p>
         <p className={this.checkDuplicateWarning()}>No duplicate names!</p>
+      </div>
+      <div className="logInInfo">
+        <span>Hello, {this.props.username}</span>
+        <button onClick={this.handleLogOut}>Log Out</button>
+      </div>
       </div>
       <div className="container">
         <div className="item1">

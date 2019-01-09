@@ -7,6 +7,31 @@
   display: none;
 }
 
+.header {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 20% 60% 20%;
+}
+
+.headerContainer {
+  grid-column: 2 / 3;
+}
+
+.logInInfo {
+  grid-column: 3 / 4;
+  text-align: right;
+  padding: 5px;
+}
+
+.logInInfo button {
+  margin-left: 3px;
+  cursor: pointer;
+}
+
+.logInInfo span, .logInInfo button {
+  height: 24px;
+}
+
 .headerContainer {
   text-align: center;
 }

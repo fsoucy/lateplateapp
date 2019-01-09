@@ -77,7 +77,7 @@ class LogIn extends Component {
       <p className={this.logInWarning()}>Log in unsuccessful!</p>
       <input type="text" placeholder="Name" value={this.state.username}
                                             onChange={this.onUsernameChange} />
-      <input type="text" placeholder="Password" value={this.state.password}
+      <input type="password" placeholder="Password" value={this.state.password}
                                                 onChange={this.onPasswordChange} />
       <button onClick={this.handleClick}>Log In</button>
       </div>
