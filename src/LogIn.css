@@ -1,0 +1,47 @@
+.logInContainer {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 30% 30% 40%;
+}
+
+.logInBox {
+  grid-column: 1 / 2;
+  padding: 2px;
+}
+
+.createAccountBox {
+  .grid-column: 2 / 3;
+  padding: 2px;
+}
+
+.logInBox > h1, .createAccountBox > h1 {
+  color: #4575c1;
+}
+
+.logInBox > input, .createAccountBox > input {
+  margin-bottom: 3px;
+  display: block;
+  width: 40%;
+  height: 20px;
+  padding: 2px;
+  border: 1px solid #4575c1;
+}
+
+.logInBox > input:focus, .createAccountBox > input:focus {
+  outline: none;
+}
+
+.logInBox > button, .createAccountBox > button {
+  cursor: pointer;
+  width: 40%;
+  height: 32px;
+  background-color: #4575c1;
+  border: 3px solid #c429b7;
+  border-radius: 3px;
+  padding: 2px;
+}
+
+.warning {
+  font-weight: bold;
+  color: red;
+}

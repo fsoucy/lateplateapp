@@ -9,7 +9,9 @@ class Main extends Component {
     this.userLogIn = this.userLogIn.bind(this);
     this.userLogOut = this.userLogOut.bind(this);
     this.checkLoggedIn = this.checkLoggedIn.bind(this);
-    this.state = {isLoggedIn: false, username: "Random username"}
+    this.userCreateAccount = this.userCreateAccount.bind(this);
+    this.state = {isLoggedIn: false, username: "Random username", failedLogIn: false,
+                  nameAlreadyExistsWarning: false}
   }
 
   checkLoggedIn() {
@@ -42,7 +44,27 @@ class Main extends Component {
     })
       .then(response => response.json())
       .then(data =>
-        this.setState({ isLoggedIn: data.logInAttempt, username: data.username }),
+        this.setState({ isLoggedIn: data.logInAttempt, username: data.username, failedLogIn: !data.logInAttempt }),
+      );
+  }
+
+  userCreateAccount(username, password) {
+    fetch('http://0.0.0.0:8080/createAccount', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      })
+    })
+      .then(response => response.json())
+      .then(data =>
+        this.setState({ isLoggedIn: data.createAccountAttempt, username: data.username,
+                        nameAlreadyExistsWarning: data.nameAlreadyExists }),
       );
   }
 
@@ -52,7 +74,7 @@ class Main extends Component {
     })
       .then(response => response.json())
       .then(data =>
-        this.setState({ isLoggedIn: false }),
+        this.setState({ isLoggedIn: false, failedLogIn: false }),
       );
   }
 
@@ -60,7 +82,9 @@ class Main extends Component {
     if (this.state.isLoggedIn) {
       return <Home username={this.state.username} logOutAction={this.userLogOut} />;
     } else {
-      return <LogIn logInAction={this.userLogIn} />
+      return <LogIn logInAction={this.userLogIn} createAccountAction={this.userCreateAccount}
+                                                  failedLogIn={this.state.failedLogIn}
+                                                  nameAlreadyExistsWarning={this.state.nameAlreadyExistsWarning} />
     }
   }
 }

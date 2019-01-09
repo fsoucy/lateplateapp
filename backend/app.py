@@ -73,6 +73,18 @@ def removeName():
     namesList = [name for name,user in names]
     return jsonify({"names": namesList, "illegalDelete": illegalDelete})
 
+@app.route('/createAccount', methods=['POST'])
+def createAccount():
+    data = json.loads(request.data.decode('utf-8'))
+    if ('loggedIn' in session) or (not 'username' in data) or (not 'password' in data):
+        return jsonify({"createAccountAttempt": False, "username": "None", "nameAlreadyExists": False})
+    username = data['username']; password = data['password'];
+    if username in users:
+        return jsonify({"createAccountAttempt": False, "username": "None", "nameAlreadyExists": True})
+    users[username] = password
+    session['loggedIn'] = username
+    return jsonify({"createAccountAttempt": True, "username": username, "nameAlreadyExists": False})
+
 @app.route('/getNames', methods=['GET'])
 def getNames():
     namesList = [name for name,user in names]
